@@ -13,6 +13,7 @@ import { ChessBoard } from "./components/ChessBoard";
 import { ConnectModal } from "./components/ConnectModal";
 import { DailyStreakTracker } from "./components/DailyStreakTracker";
 import { AdaptiveHabitsCard } from "./components/AdaptiveHabitsCard";
+import { TrainingInsights } from "./components/TrainingInsights";
 import { GameControls } from "./components/GameControls";
 import { PostGameModal } from "./components/PostGameModal";
 import { TheorySection } from "./components/TheorySection";
@@ -325,7 +326,11 @@ export default function App() {
     const today = new Date().toISOString().split("T")[0];
     const isNewCheck = !streakData.checkedDays.includes(today);
     const updatedCheckedDays = isNewCheck ? [...streakData.checkedDays, today] : streakData.checkedDays;
-    const newStreak = isNewCheck ? streakData.currentStreak + 1 : streakData.currentStreak;
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yesterdayStr = yesterday.toISOString().split("T")[0];
+    const continuesStreak = streakData.checkedDays.includes(yesterdayStr) || streakData.lastPlayedDate === today;
+    const newStreak = isNewCheck ? (continuesStreak ? streakData.currentStreak + 1 : 1) : streakData.currentStreak;
     const newBest = Math.max(newStreak, streakData.bestStreak);
 
     setStreakData({
@@ -489,7 +494,9 @@ export default function App() {
               isGameActive={!game.isGameOver() && game.history().length > 0}
             />
 
-            {/* Adaptive Habits & Coach Profile (Requirements 2, 4, 5) */}
+            <TrainingInsights player={player} stats={stats} habits={habits} recentGames={recentGames} coachElo={coachElo} />
+
+            {/* Adaptive Habits & Coach Profile (Requirements 2, 4, 5) */
             <AdaptiveHabitsCard
               habits={habits}
               diagnosis={diagnosis}
