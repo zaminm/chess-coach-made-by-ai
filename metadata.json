@@ -1,0 +1,6 @@
+{
+  "name": "Grandmaster AI - Adaptive Chess Coach",
+  "description": "Personalized chess coach that connects with Chess.com, analyzes your playing habits, delivers daily adaptive training, and scales Elo dynamically.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
